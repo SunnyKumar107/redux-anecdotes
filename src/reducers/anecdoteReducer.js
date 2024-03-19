@@ -21,64 +21,30 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'ADD_VOTE': {
-      let voted = state.find((anecdote) => anecdote.id === action.paylod)
-      voted.votes = voted.votes + 1
-      const newState = state.map((anecdote) =>
-        anecdote.id === voted.id ? voted : anecdote
+const anecdoteSlice = createSlice({
+  name: 'anecdote',
+  initialState,
+  reducers: {
+    createAnecdote(state, action) {
+      const anecdote = {
+        id: getId(),
+        content: action.payload,
+        votes: 0,
+      }
+      state.concat(anecdote)
+    },
+    addVote(state, action) {
+      const voteAnecdote = state.find(
+        (anecdote) => anecdote.id === action.payload
       )
-      return newState
-    }
-    case 'ADD_ANECDOTE': {
-      const newState = anecdotesAtStart.concat(action.paylod).map(asObject)
+      voteAnecdote.votes = voteAnecdote.votes + 1
+      state.map((anecdote) =>
+        anecdote.id === action.payload.id ? voteAnecdote : anecdote
+      )
+    },
+  },
+})
 
-      return newState
-    }
-    default:
-      return state
-  }
-}
+export const { createAnecdote, addVote } = anecdoteSlice.actions
 
-export default reducer
-
-//
-
-//Redux toolkit
-
-//
-
-// const initialState = {
-//   anecdote: [{ id: getId(), content: 'Hello World', votes: 0 }],
-// }
-
-// const anecdoteSlice = createSlice({
-//   name: 'anecdote',
-//   initialState,
-//   reducers: {
-//     createAnecdote(state, action) {
-//       console.log('action', action)
-//       const anecdote = {
-//         id: getId(),
-//         content: action.payload,
-//         votes: 0,
-//       }
-//       state.anecdote.concat(anecdote)
-//       console.log(initialState.anecdote)
-//     },
-//     addVote(state, action) {
-//       const voteAnecdote = state.find(
-//         (anecdote) => anecdote.id === action.payload
-//       )
-//       voteAnecdote.votes = voteAnecdote.votes + 1
-//       state.map((anecdote) =>
-//         anecdote.id === action.payload.id ? voteAnecdote : anecdote
-//       )
-//     },
-//   },
-// })
-
-// export const { createAnecdote, addVote } = anecdoteSlice.actions
-
-// export default anecdoteSlice.reducer
+export default anecdoteSlice.reducer
