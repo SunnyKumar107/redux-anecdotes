@@ -4,7 +4,6 @@ const Filter = () => {
   const dispatch = useDispatch()
 
   const handleChange = (event) => {
-    // dispatch(filterAnecdote(event.target.value))
     console.log(event.target.value)
   }
 
