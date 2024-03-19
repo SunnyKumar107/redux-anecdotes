@@ -31,7 +31,7 @@ const anecdoteSlice = createSlice({
         content: action.payload,
         votes: 0,
       }
-      state.concat(anecdote)
+      return [...state, anecdote]
     },
     addVote(state, action) {
       const voteAnecdote = state.find(
