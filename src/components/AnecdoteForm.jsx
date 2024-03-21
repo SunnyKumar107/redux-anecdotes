@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const AnecdoteForm = () => {
-  const [newAnecdote, setNewAnecdote] = useState('')
+  const [content, setContent] = useState('')
 
   const dispatch = useDispatch()
 
   const createAnecdoteHandler = (event) => {
     event.preventDefault()
-    dispatch(createAnecdote(newAnecdote))
-    setNewAnecdote('')
+    dispatch(createAnecdote(content))
+    dispatch(setNotification(`New anecdote ${content}`, 5))
+    setContent('')
   }
 
   return (
@@ -20,8 +22,8 @@ const AnecdoteForm = () => {
         <div>
           <input
             type="text"
-            value={newAnecdote}
-            onChange={(e) => setNewAnecdote(e.target.value)}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
           />
         </div>
         <button type="submit">create</button>
