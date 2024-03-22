@@ -1,17 +1,23 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
-import { setNotification } from '../reducers/notificationReducer'
+import notificationContext from '../notificatioContext'
 
 const AnecdoteForm = () => {
   const [content, setContent] = useState('')
+
+  const [notification, notificationDispatch] = useContext(notificationContext)
 
   const dispatch = useDispatch()
 
   const createAnecdoteHandler = (event) => {
     event.preventDefault()
     dispatch(createAnecdote(content))
-    dispatch(setNotification(`New anecdote ${content}`, 5))
+    notificationDispatch({
+      type: 'DISPLAY_MESSAGE',
+      paylod: `New anecdote ${content}`,
+    })
+
     setContent('')
   }
 

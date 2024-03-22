@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { addVote } from '../reducers/anecdoteReducer'
-import { setNotification } from '../reducers/notificationReducer'
+import notificationContext from '../notificatioContext'
 
 const AnecdoteList = () => {
   const anecdotes = useSelector(({ anecdotes }) => anecdotes).toSorted(
     (a, b) => b.votes - a.votes
   )
+
+  const [notification, notificationDispatch] = useContext(notificationContext)
 
   const filterSearch = useSelector((state) => state.filter)
   const filteredAnecdotes = anecdotes.filter((anecdote) =>
@@ -17,7 +19,10 @@ const AnecdoteList = () => {
 
   const vote = (anecdote) => {
     dispatch(addVote(anecdote))
-    dispatch(setNotification(`You voted "${anecdote.content}"`, 3))
+    notificationDispatch({
+      type: 'DISPLAY_MESSAGE',
+      paylod: `You voted "${anecdote.content}"`,
+    })
   }
   return (
     <div>

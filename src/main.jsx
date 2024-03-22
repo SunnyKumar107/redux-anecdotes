@@ -3,9 +3,12 @@ import { Provider } from 'react-redux'
 import App from './App'
 
 import store from './store'
+import { NotificationContextProvider } from './notificatioContext'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <App />
+    <NotificationContextProvider>
+      <App />
+    </NotificationContextProvider>
   </Provider>
 )
